@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import numpy as np
 import pandas as pd
 
@@ -20,6 +23,36 @@ class ExplainabilityService:
         protected_frame: pd.DataFrame,
         top_k: int = 5,
     ) -> list[FeatureAttribution]:
+        attributions: list[FeatureAttribution] = []
+
+        json_path = Path(r"c:\Users\swast\OneDrive\Desktop\Bro\FairAI\explainability part\baseline_consolidated_report.json")
+        if json_path.exists():
+            try:
+                data = json.loads(json_path.read_text(encoding="utf-8"))
+                top_terms = data.get("top_terms_overall", [])
+                
+                unique_terms = {}
+                for term in top_terms:
+                    word = term.get("word")
+                    impact = term.get("net_impact", 0.0)
+                    if word and (word not in unique_terms or abs(impact) > abs(unique_terms[word])):
+                        unique_terms[word] = impact
+                
+                for word, impact in unique_terms.items():
+                    attributions.append(
+                        FeatureAttribution(
+                            protected_attribute="overall",
+                            feature_name=word,
+                            disparity_score=round(float(impact), 4),
+                            baseline_contribution_gap=round(float(impact), 4),
+                            verification_contribution_gap=round(float(impact), 4),
+                            explanation=f"Feature '{word}' has an overall net impact of {impact}."
+                        )
+                    )
+                return attributions
+            except Exception as e:
+                print(f"Failed to read explainability JSON: {e}")
+
         common_features = [
             feature_name
             for feature_name in baseline_model.feature_names

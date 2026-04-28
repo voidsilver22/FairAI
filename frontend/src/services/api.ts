@@ -37,7 +37,7 @@ export const jobService = {
   },
   getJob: async (jobId: string): Promise<AsyncJobRecord> => {
     const response = await api.get(`/jobs/${jobId}`);
-    return response.data;
+    return response.data.job;
   },
   listJobs: async (): Promise<AsyncJobRecord[]> => {
     const response = await api.get('/jobs');
@@ -45,7 +45,7 @@ export const jobService = {
   },
   getReport: async (jobId: string): Promise<FairnessReport> => {
     const response = await api.get(`/jobs/${jobId}/report`);
-    return response.data;
+    return response.data.report;
   },
 };
 

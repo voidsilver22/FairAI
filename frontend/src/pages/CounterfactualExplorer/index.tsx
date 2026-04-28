@@ -30,13 +30,13 @@ const CounterfactualExplorer: React.FC = () => {
   const report = latestCompletedJob?.result?.report;
   const counterfactuals = report?.counterfactuals || [];
   
-  // Flatten all examples from all counterfactual audits
+  // Flatten all examples from all counterfactual audits and filter for impactful flips
   const allExamples = counterfactuals.flatMap(audit => 
     audit.examples.map(example => ({
       ...example,
       protected_attribute: audit.protected_attribute
     }))
-  );
+  ).filter(ex => ex.original_prediction !== ex.alternative_prediction);
 
   if (isLoadingJobs) {
     return (

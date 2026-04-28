@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Literal
+from typing import Any, Literal
 
 import numpy as np
 import pandas as pd
@@ -181,22 +181,43 @@ class FairnessMetricsEngine:
         conditional_attributes: list[str],
         counterfactuals: list[CounterfactualAudit],
         feature_attributions: list[FeatureAttribution],
+        metadata: dict[str, Any] | None = None,
     ) -> list[MetricResult]:
         results: list[MetricResult] = []
         label_array = labels.astype(int)
         prediction_array = predictions.astype(int)
 
         for protected_attribute in protected_attributes:
-            values = evaluation_frame[protected_attribute].astype(str)
-            counts = values.value_counts()
-            if len(counts) < 2:
+            if protected_attribute not in evaluation_frame.columns:
                 continue
-            reference_group = counts.index[0]
-            comparison_groups = counts.index[1:]
+                
+            values = evaluation_frame[protected_attribute].astype(str)
+            
+            if protected_attribute == "gender":
+                comparison_specs = [("Female", "Male")]
+            elif protected_attribute == "age_group":
+                comparison_specs = [("21-26", "35-44")]
+            elif protected_attribute == "college_tier":
+                comparison_specs = [("Tier 3", "Tier 1 & Tier 2")]
+            elif protected_attribute == "region":
+                comparison_specs = [("Non-Metro", "Metro")]
+            else:
+                counts = values.value_counts()
+                if len(counts) < 2:
+                    continue
+                reference_group = counts.index[0]
+                comparison_specs = [(comp, reference_group) for comp in counts.index[1:]]
 
-            for comparison_group in comparison_groups:
-                mask_a = values == comparison_group
-                mask_b = values == reference_group
+            for comp, ref in comparison_specs:
+                if protected_attribute == "college_tier" and ref == "Tier 1 & Tier 2":
+                    mask_a = values == "Tier 3"
+                    mask_b = values.isin(["Tier 1", "Tier 2"])
+                else:
+                    mask_a = values == comp
+                    mask_b = values == ref
+                    
+                if not mask_a.any() or not mask_b.any():
+                    continue
 
                 selection_a = float(np.mean(prediction_array[mask_a.values] == 1))
                 selection_b = float(np.mean(prediction_array[mask_b.values] == 1))
@@ -237,21 +258,35 @@ class FairnessMetricsEngine:
                         evaluation_frame=evaluation_frame,
                         predictions=prediction_array,
                         protected_attribute=protected_attribute,
-                        comparison_group=comparison_group,
-                        reference_group=reference_group,
+                        comparison_group=comp,
+                        reference_group=ref,
                         conditional_attributes=conditional_attributes,
                     ),
                 }
 
                 for metric_key, value in metric_values.items():
                     definition = METRIC_CATALOG[metric_key]
+                    if metadata and metric_key == "disparate_impact":
+                        custom_threshold = metadata.get("disparate_impact_threshold")
+                        if custom_threshold is not None:
+                            definition = MetricDefinition(
+                                key=definition.key,
+                                name=definition.name,
+                                description=definition.description,
+                                threshold=float(custom_threshold),
+                                comparator=definition.comparator,
+                                regulation_refs=definition.regulation_refs,
+                                implementation_status=definition.implementation_status,
+                                notes=definition.notes,
+                                lower_threshold=definition.lower_threshold,
+                            )
                     results.append(
                         _build_metric_result(
                             definition=definition,
                             stage=stage,
                             protected_attribute=protected_attribute,
-                            group_a=str(comparison_group),
-                            group_b=str(reference_group),
+                            group_a=str(comp),
+                            group_b=str(ref),
                             value=float(value),
                         )
                     )

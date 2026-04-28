@@ -83,6 +83,12 @@ const Mitigation: React.FC = () => {
     enabled: !!jobId,
   });
 
+  const { data: reportResponse } = useQuery({
+    queryKey: ['report', jobId],
+    queryFn: () => jobService.getReport(jobId!),
+    enabled: job?.status === 'completed',
+  });
+
   if (error) return <div className="p-8 text-red-500 font-bold bg-red-50 rounded-xl border border-red-100">Error loading job data.</div>;
 
   if (job?.status === 'failed') {
@@ -130,20 +136,50 @@ const Mitigation: React.FC = () => {
     );
   }
 
-  const report = job?.result?.report;
+  if (job?.status === 'completed' && !reportResponse) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[70vh] space-y-8">
+        <div className="relative">
+          <div className="h-24 w-24 border-4 border-slate-100 border-t-primary rounded-full animate-spin" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Loader2 size={32} className="text-primary/30 animate-spin" />
+          </div>
+        </div>
+        <div className="text-center max-w-md">
+          <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+            Fetching Report
+          </h2>
+          <p className="text-slate-500 mt-3 font-medium leading-relaxed">
+            Loading fairness metrics and compliance data...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  const report = reportResponse;
   if (!report) return null;
 
-  const isCompliant = report.verification_metrics?.every(m => m.passed) ?? false;
+  // Calculate fairness improvement based on unique metric keys
+  const uniqueMetricKeys = Array.from(new Set((report.baseline_metrics || []).map((m: any) => m.metric_key)));
+  const totalMetrics = uniqueMetricKeys.length || 1;
+
+  const checkMetricPassed = (metrics: any[], key: string) => {
+    const instances = metrics.filter(m => m.metric_key === key);
+    if (instances.length === 0) return false;
+    return instances.every(m => m.passed);
+  };
+
+  const baselinePassed = uniqueMetricKeys.filter(key => checkMetricPassed(report.baseline_metrics || [], key)).length;
+  const verificationPassed = uniqueMetricKeys.filter(key => checkMetricPassed(report.verification_metrics || [], key)).length;
+  
+  const isCompliant = verificationPassed === totalMetrics;
   
   // Calculate accuracy drop
   const baselineAcc = report.baseline_performance?.accuracy || 0;
   const verificationAcc = report.verification_performance?.accuracy || 0;
   const accDrop = baselineAcc > 0 ? ((baselineAcc - verificationAcc) / baselineAcc) * 100 : 0;
   
-  // Calculate fairness improvement
-  const baselinePassed = (report.baseline_metrics || []).filter(m => m.passed).length;
-  const verificationPassed = (report.verification_metrics || []).filter(m => m.passed).length;
-  const totalMetrics = (report.baseline_metrics || []).length || 1;
   const fairnessImprovement = ((verificationPassed - baselinePassed) / totalMetrics) * 100;
 
   return (
@@ -204,11 +240,18 @@ const Mitigation: React.FC = () => {
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          {(isMitigating ? report.verification_metrics : report.baseline_metrics)
-            .slice(0, 5)
-            .map((metric, i) => (
-              <MetricRing key={i} metric={metric} />
-            ))}
+          {uniqueMetricKeys.slice(0, 5).map((key, i) => {
+            const metricsList = isMitigating ? report.verification_metrics : report.baseline_metrics;
+            const instances = (metricsList || []).filter((m: any) => m.metric_key === key);
+            const worstInstance = instances.find((m: any) => !m.passed) || instances[0];
+            if (!worstInstance) return null;
+            
+            const aggregatedMetric = {
+              ...worstInstance,
+              passed: checkMetricPassed(metricsList || [], key as string)
+            };
+            return <MetricRing key={i} metric={aggregatedMetric} />;
+          })}
         </div>
       </section>
 
@@ -220,7 +263,10 @@ const Mitigation: React.FC = () => {
           </h3>
           <p className="text-sm text-slate-400 font-medium mb-8">SHAP value analysis reveals features driving biased predictions.</p>
           <div className="space-y-6">
-            {report.feature_attributions.slice(0, 4).map((attr, i) => (
+            {[...report.feature_attributions]
+              .sort((a: any, b: any) => Math.abs(b.disparity_score) - Math.abs(a.disparity_score))
+              .slice(0, 4)
+              .map((attr: any, i: number) => (
               <div key={i} className="space-y-2">
                 <div className="flex justify-between items-end">
                   <span className="text-sm font-bold text-slate-800">{attr.feature_name}</span>
@@ -241,12 +287,12 @@ const Mitigation: React.FC = () => {
           <h3 className="text-lg font-black text-slate-900 mb-2">Accuracy vs. Fairness Tradeoff</h3>
           <p className="text-sm text-slate-400 font-medium mb-10">Adjusting mitigation intensity affects overall model utility.</p>
           
-          <div className="flex-1 flex flex-col justify-center">
+          <div className="flex flex-col justify-start pt-6">
             <div className="h-3 w-full bg-gradient-to-r from-red-500 via-amber-400 to-emerald-500 rounded-full relative mb-12">
               <div className="absolute left-[85%] top-1/2 -translate-y-1/2 w-6 h-6 bg-white border-4 border-primary rounded-full shadow-lg" />
             </div>
             
-            <div className="grid grid-cols-2 gap-8 border-t border-slate-50 pt-8">
+            <div className="grid grid-cols-2 gap-8 border-t border-slate-50 pt-8 mt-auto">
               <div>
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Historical Accuracy</p>
                 <div className="flex items-baseline gap-2">

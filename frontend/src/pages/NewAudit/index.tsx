@@ -41,9 +41,15 @@ const NewAudit: React.FC = () => {
     if (!fileUri) return;
     
     try {
+      const savedRatio = localStorage.getItem('disparate_impact_threshold');
+      const ratioThreshold = savedRatio ? parseFloat(savedRatio) : 0.8;
+      
       const { job_id } = await jobService.createDebiasJob(fileUri, {
         label_column: 'shortlisted',
         protected_attributes: ['gender', 'age_group', 'college_tier', 'region'],
+        metadata: {
+          disparate_impact_threshold: ratioThreshold
+        }
       });
       navigate(`/mitigation/${job_id}`);
     } catch (error) {

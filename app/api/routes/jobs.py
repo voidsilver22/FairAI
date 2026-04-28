@@ -110,3 +110,11 @@ async def execute_pipeline_inline(
         job_id=job.job_id,
         status_url=str(request.url_for("get_job_status", job_id=job.job_id)),
     )
+
+@router.delete("/jobs", status_code=200)
+def clear_jobs(container: ApplicationContainer = Depends(get_container)) -> dict:
+    """Clear all jobs from the job store."""
+    if hasattr(container.job_store, "_jobs"):
+        with container.job_store._lock:
+            container.job_store._jobs.clear()
+    return {"status": "ok"}

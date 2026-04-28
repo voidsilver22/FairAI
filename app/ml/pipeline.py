@@ -178,6 +178,7 @@ class FairLensPipeline:
             conditional_attributes=spec.conditional_attributes,
             counterfactuals=baseline_counterfactuals,
             feature_attributions=feature_attributions,
+            metadata=spec.metadata,
         )
         verification_metrics = self.metrics_engine.compute_group_metrics(
             evaluation_frame=scrubbed_features_result.annotated_frame.loc[test_mask],
@@ -188,6 +189,7 @@ class FairLensPipeline:
             conditional_attributes=spec.conditional_attributes,
             counterfactuals=verification_counterfactuals,
             feature_attributions=feature_attributions,
+            metadata=spec.metadata,
         )
 
         report = FairnessReport(
