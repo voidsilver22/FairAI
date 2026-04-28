@@ -1,132 +1,103 @@
-# FairAI
+# FairAI: FairLens ATS Pipeline
 
-Read `project_state.md` first if you are resuming work in this repository.
+FairAI is a comprehensive platform for auditing and remediating bias in Applicant Tracking Systems (ATS). It provides a full-stack solution including a FastAPI backend for asynchronous ML pipeline execution and a React frontend for exploring results and managing audits.
 
-This repository contains a FastAPI backend for the FairLens ATS Pipeline with an asynchronous job architecture, pluggable storage, and queue boundaries that are ready to move from local development into GCP services.
+## Project Structure
 
-## What Changed
-- Job submission is now asynchronous.
-- `POST /api/v1/jobs/debias` returns `202 Accepted` and never runs the ML pipeline in the request.
-- Local queue dispatch runs the worker handler on a background thread for development and tests.
-- Storage is abstracted behind upload URL, download URL, save, and get primitives.
-- The ML pipeline accepts `file_uri + config` and stays decoupled from FastAPI.
-
-## Current Architecture
 ```text
-app/
-  adapters/
-    compute.py      Local compute metadata + Vertex-ready stub boundary
-    queue.py        Local queue dispatcher + Pub/Sub-ready stub boundary
-    storage.py      Local storage + GCS signed-URL-ready stub boundary
-  api/
-    routes/
-      jobs.py       Async job submission and polling endpoints
-      uploads.py    Upload init, local upload completion, downloads
-  ml/
-    pipeline.py     Storage-agnostic pipeline execution API
-  services/
-    job_store.py    In-memory async job lifecycle store
-    orchestration.py Queue subscriber, worker execution, lifecycle updates
-    job_service.py  Submission boundary and job/report access
-    repositories.py File-backed persisted audit/job detail store
-tests/
-  test_api.py
-  test_job_store.py
-  test_pipeline.py
-  test_storage_adapters.py
+.
+├── app/                # FastAPI Backend source code
+├── frontend/           # React + TypeScript + Vite Frontend
+├── ml/                 # ML Pipeline core logic
+├── Model Training/     # Integrated model training workspace
+├── tests/              # Backend test suite
+├── project_state.md    # Detailed technical state (read first for devs)
+└── pyproject.toml      # Backend dependencies and metadata
 ```
 
-## Key Endpoints
-- `POST /api/v1/uploads/init`
-- `POST /local-upload/{file_id}` for local mode upload completion
-- `POST /api/v1/jobs/debias`
-- `GET /api/v1/jobs/{job_id}`
-- `GET /api/v1/jobs/{job_id}/report`
-- `GET /api/v1/jobs/{job_id}/artifacts/{artifact_kind}`
-- `POST /api/v1/pipeline/execute` for async inline-record testing
-- `POST /api/v1/hosted/score`
-- `GET /api/v1/model-training`
-- `POST /api/v1/model-training/dataset`
-- `POST /api/v1/model-training/audit`
+---
 
-## Local Setup
+## Getting Started
 
-### Linux/macOS
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -e .[dev]
-```
+### Backend Setup (FastAPI)
 
-### Windows
-```powershell
-python -m venv .venv
-.\.venv\Scripts\activate
-pip install -e .[dev]
-```
+The backend uses a pluggable architecture (storage, queue, compute) ready for GCP but fully runnable locally.
 
-Important environment variables:
+1. **Environment Setup:**
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # Windows: .\.venv\Scripts\activate
+   pip install -e .[dev]
+   ```
+
+2. **Run Backend:**
+   ```bash
+   uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
+   ```
+
+3. **Run Tests:**
+   ```bash
+   pytest -q
+   ```
+
+**Important Environment Variables:**
 - `FAIRLENS_LOCAL_STORAGE_ROOT=.fairlens-data`
 - `FAIRLENS_QUEUE_BACKEND=local`
 - `FAIRLENS_STORAGE_BACKEND=local`
-- `FAIRLENS_MODEL_TRAINING_WORKSPACE="Model Training"`
-- `STORAGE_MODE=local` is also supported as an alias
+
+### Frontend Setup (React)
+
+The frontend is a modern React application built with Vite, Tailwind CSS, and TanStack Query.
+
+1. **Install Dependencies:**
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+2. **Run Development Server:**
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## Backend Architecture
+
+FairAI features an asynchronous job architecture designed for scalability:
+
+- **Async Jobs:** Submission returns `202 Accepted`. Jobs run on background threads (local) or via Pub/Sub (cloud).
+- **Pluggable Adapters:**
+  - `storage.py`: Local filesystem or Google Cloud Storage.
+  - `queue.py`: In-memory thread dispatcher or GCP Pub/Sub.
+  - `compute.py`: Local execution or Vertex AI.
+- **ML Pipeline:** Decoupled from the API, accepting `file_uri + config` for execution.
+
+### Key Endpoints
+- `POST /api/v1/uploads/init`: Initialize a file upload.
+- `POST /api/v1/jobs/debias`: Submit a new debiasing job.
+- `GET /api/v1/jobs/{job_id}`: Poll job status.
+- `GET /api/v1/jobs/{job_id}/report`: Fetch the final fairness report.
+- `POST /api/v1/model-training/audit`: Regenerate audit reports from existing data.
+
+---
 
 ## Model Training Integration
 
-The detached `Model Training/` folder is now integrated as a configured workspace instead of a standalone script bundle.
+The `Model Training/` folder is integrated as a workspace service.
+- **Inspect:** `GET /api/v1/model-training` lists available training capabilities.
+- **Dataset Generation:** `POST /api/v1/model-training/dataset` builds unstructured datasets from raw sources.
+- **Auditing:** `POST /api/v1/model-training/audit` regenerates reports.
 
-What is now wired into the backend:
-- `GET /api/v1/model-training` inspects the workspace, lists expected assets, and reports which training capabilities are available from installed dependencies.
-- `POST /api/v1/model-training/dataset` rebuilds `fairlens_dataset_unstructured.csv` from the structured source dataset.
-- `POST /api/v1/model-training/audit` regenerates `final_audit_report.json` from `baseline_scored_results.csv` and `clean_scored_results.csv`.
-
-What remains intentionally optional:
-- baseline model training
-- DANN training
-- fair-score generation
-
-Those heavier steps still depend on the optional ML stack:
-
+To enable full ML training capabilities, install the ML extras:
 ```bash
 pip install -e .[ml]
 ```
 
-## Run The Backend
-
-### Linux/macOS
-```bash
-./.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
-```
-
-### Windows
-```powershell
-.\.venv\Scripts\uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
-```
-
-## Run Tests
-
-### Linux/macOS
-```bash
-./.venv/bin/pytest -q
-```
-
-### Windows
-```powershell
-.\.venv\Scripts\pytest -q
-```
+---
 
 ## Local vs Cloud
-- Local mode is fully implemented for uploads, downloads, job execution, artifact persistence, and polling.
-- GCS mode is scaffolded. Signed upload/download URLs are stubbed and URI generation is in place, but direct cloud reads and writes are not implemented yet.
-- Pub/Sub mode is scaffolded. The queue adapter surface is ready, but the current Pub/Sub implementation is intentionally a stub.
-- Vertex AI execution is not wired yet. The compute adapter boundary remains in place so orchestration can move out of-process later.
+- **Local:** Fully implemented for uploads, jobs, and artifact persistence.
+- **Cloud (GCP):** Scaffolded with adapters for GCS, Pub/Sub, and Vertex AI. Signed URLs and URI generation are in place, ready for full cloud integration.
 
-## Current Flow
-1. Client calls `POST /api/v1/uploads/init`.
-2. Client uploads data to the returned local upload URL.
-3. Client calls `POST /api/v1/jobs/debias` with `file_uri` and config.
-4. API creates a pending job, schedules queue publication, and returns `202 Accepted`.
-5. Local queue dispatch invokes the orchestration worker off-thread.
-6. Orchestrator updates lifecycle state, runs the pipeline, persists artifacts, and stores the result summary.
-7. Client polls `GET /api/v1/jobs/{job_id}` until `completed` or `failed`.
+For a deeper dive into the technical implementation and recent changes, please refer to [project_state.md](./project_state.md).
