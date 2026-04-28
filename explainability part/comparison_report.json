@@ -1,0 +1,48 @@
+{
+  "models_compared": [
+    "Legacy ATS",
+    "FairLens DANN"
+  ],
+  "dataset_rows": 9544,
+  "threshold_used": 0.7,
+  "metrics": {
+    "baseline_mean_score": 0.6609,
+    "fairlens_mean_score": 0.6559,
+    "baseline_selection_rate_percent": 34.14,
+    "fairlens_selection_rate_percent": 26.81,
+    "selection_rate_difference_percent": -7.33
+  },
+  "explainability_comparison": {
+    "baseline_top_terms": [
+      "Machine Learning",
+      "Python",
+      "B.Tech",
+      "Data Science",
+      "Machine Learning Engineer",
+      "Bachelor",
+      "Engineering",
+      "Manager",
+      "Fresher",
+      "Accountant"
+    ],
+    "fairlens_top_terms": [
+      "Machine Learning",
+      "Certified",
+      "Python",
+      "Developer",
+      "Bachelor",
+      "Accountant",
+      "Data Science",
+      "Fresher",
+      "Engineering",
+      "Machine Learning Engineer"
+    ]
+  },
+  "summary_findings": [
+    "Both models were evaluated on the full 9544-row dataset.",
+    "Both models used 300 sampled resumes for explanation audits.",
+    "Baseline model showed stronger irregular penalties on certain technical skills.",
+    "FairLens model produced a different score distribution and more selective threshold behavior.",
+    "FairLens may require threshold recalibration for deployment fairness targets."
+  ]
+}

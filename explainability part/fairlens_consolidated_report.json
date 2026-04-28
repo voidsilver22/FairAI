@@ -1,0 +1,369 @@
+{
+  "model_name": "FairLens DANN",
+  "rows_evaluated": 9544,
+  "mean_score": 0.6559,
+  "median_score": 0.6496,
+  "min_score": 0.3699,
+  "max_score": 0.8871,
+  "selected_at_0_70_percent": 26.81,
+  "rows_explained": 300,
+  "top_terms_overall": [
+    {
+      "word": "Machine Learning",
+      "net_impact": -1.2149
+    },
+    {
+      "word": "Certified",
+      "net_impact": 0.7096
+    },
+    {
+      "word": "Python",
+      "net_impact": -0.3612
+    },
+    {
+      "word": "Developer",
+      "net_impact": -0.3368
+    },
+    {
+      "word": "Bachelor",
+      "net_impact": 0.3076
+    },
+    {
+      "word": "Accountant",
+      "net_impact": -0.2946
+    },
+    {
+      "word": "Data Science",
+      "net_impact": -0.2898
+    },
+    {
+      "word": "Fresher",
+      "net_impact": -0.2681
+    },
+    {
+      "word": "Engineering",
+      "net_impact": 0.2658
+    },
+    {
+      "word": "Machine Learning Engineer",
+      "net_impact": -0.2192
+    },
+    {
+      "word": "Senior",
+      "net_impact": -0.1971
+    },
+    {
+      "word": "SQL",
+      "net_impact": 0.1764
+    },
+    {
+      "word": "Computer Science",
+      "net_impact": 0.1722
+    },
+    {
+      "word": "C",
+      "net_impact": 0.166
+    },
+    {
+      "word": "Software Developer",
+      "net_impact": -0.1604
+    }
+  ],
+  "sample_explanations": [
+    {
+      "model_name": "FairLens DANN",
+      "predicted_score": 0.6353,
+      "top_impact_features": [
+        {
+          "word": "Certified",
+          "impact": -0.0165
+        },
+        {
+          "word": "Deep Learning",
+          "impact": 0.004
+        },
+        {
+          "word": "Machine Learning",
+          "impact": -0.0031
+        },
+        {
+          "word": "Engineer",
+          "impact": 0.0021
+        },
+        {
+          "word": "B.Tech",
+          "impact": 0.0014
+        },
+        {
+          "word": "Python",
+          "impact": 0.0002
+        }
+      ]
+    },
+    {
+      "model_name": "FairLens DANN",
+      "predicted_score": 0.6728,
+      "top_impact_features": [
+        {
+          "word": "B.Tech",
+          "impact": -0.0154
+        },
+        {
+          "word": "Machine Learning",
+          "impact": -0.0119
+        },
+        {
+          "word": "Computer Science",
+          "impact": 0.0099
+        },
+        {
+          "word": "Python",
+          "impact": -0.0075
+        },
+        {
+          "word": "SQL",
+          "impact": 0.0036
+        },
+        {
+          "word": "Certified",
+          "impact": -0.0013
+        },
+        {
+          "word": "C",
+          "impact": 0.0012
+        }
+      ]
+    },
+    {
+      "model_name": "FairLens DANN",
+      "predicted_score": 0.6768,
+      "top_impact_features": [
+        {
+          "word": "Certified",
+          "impact": 0.0054
+        },
+        {
+          "word": "Machine Learning",
+          "impact": -0.0025
+        },
+        {
+          "word": "Analytics",
+          "impact": 0.0024
+        },
+        {
+          "word": "SQL",
+          "impact": 0.001
+        },
+        {
+          "word": "R",
+          "impact": -0.0005
+        },
+        {
+          "word": "Reporting",
+          "impact": -0.0005
+        }
+      ]
+    },
+    {
+      "model_name": "FairLens DANN",
+      "predicted_score": 0.5973,
+      "top_impact_features": [
+        {
+          "word": "Data Analyst",
+          "impact": 0.0363
+        },
+        {
+          "word": "Analytics",
+          "impact": 0.0193
+        },
+        {
+          "word": "Machine Learning",
+          "impact": -0.0185
+        },
+        {
+          "word": "Visualization",
+          "impact": 0.0095
+        },
+        {
+          "word": "Excel",
+          "impact": 0.0037
+        },
+        {
+          "word": "Business Analysis",
+          "impact": 0.0037
+        },
+        {
+          "word": "SQL",
+          "impact": 0.0017
+        },
+        {
+          "word": "Python",
+          "impact": -0.0014
+        }
+      ]
+    },
+    {
+      "model_name": "FairLens DANN",
+      "predicted_score": 0.7654,
+      "top_impact_features": [
+        {
+          "word": "Certified",
+          "impact": 0.0263
+        },
+        {
+          "word": "Business Analyst",
+          "impact": -0.0082
+        },
+        {
+          "word": "SQL",
+          "impact": 0.004
+        },
+        {
+          "word": "Python",
+          "impact": -0.0034
+        },
+        {
+          "word": "Reporting",
+          "impact": 0.0032
+        },
+        {
+          "word": "Data Analyst",
+          "impact": -0.0016
+        },
+        {
+          "word": "Business Analysis",
+          "impact": 0.0004
+        },
+        {
+          "word": "Bachelor",
+          "impact": 0.0004
+        }
+      ]
+    },
+    {
+      "model_name": "FairLens DANN",
+      "predicted_score": 0.6422,
+      "top_impact_features": [
+        {
+          "word": "Accountant",
+          "impact": -0.0251
+        },
+        {
+          "word": "Certified",
+          "impact": 0.0125
+        },
+        {
+          "word": "Excel",
+          "impact": -0.005
+        },
+        {
+          "word": "English",
+          "impact": 0.0046
+        }
+      ]
+    },
+    {
+      "model_name": "FairLens DANN",
+      "predicted_score": 0.6175,
+      "top_impact_features": [
+        {
+          "word": "Machine Learning",
+          "impact": -0.0296
+        },
+        {
+          "word": "Machine Learning Engineer",
+          "impact": -0.0219
+        },
+        {
+          "word": "Engineer",
+          "impact": -0.0082
+        },
+        {
+          "word": "Deep Learning",
+          "impact": 0.0049
+        },
+        {
+          "word": "Python",
+          "impact": 0.004
+        },
+        {
+          "word": "Engineering",
+          "impact": 0.0036
+        },
+        {
+          "word": "B.Tech",
+          "impact": -0.0017
+        },
+        {
+          "word": "C",
+          "impact": 0.001
+        }
+      ]
+    },
+    {
+      "model_name": "FairLens DANN",
+      "predicted_score": 0.609,
+      "top_impact_features": []
+    },
+    {
+      "model_name": "FairLens DANN",
+      "predicted_score": 0.6358,
+      "top_impact_features": [
+        {
+          "word": "Senior",
+          "impact": -0.0148
+        },
+        {
+          "word": "Lead",
+          "impact": -0.0084
+        },
+        {
+          "word": "Master",
+          "impact": -0.0071
+        },
+        {
+          "word": "Bachelor",
+          "impact": -0.0059
+        },
+        {
+          "word": "Engineer",
+          "impact": 0.0053
+        },
+        {
+          "word": "Engineering",
+          "impact": -0.0035
+        },
+        {
+          "word": "Manager",
+          "impact": 0.0002
+        }
+      ]
+    },
+    {
+      "model_name": "FairLens DANN",
+      "predicted_score": 0.6217,
+      "top_impact_features": [
+        {
+          "word": "Python",
+          "impact": 0.0103
+        },
+        {
+          "word": "Visualization",
+          "impact": 0.0043
+        },
+        {
+          "word": "Analytics",
+          "impact": 0.0035
+        },
+        {
+          "word": "B.Tech",
+          "impact": -0.003
+        },
+        {
+          "word": "Machine Learning",
+          "impact": 0.0026
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,369 @@
+{
+  "model_name": "Legacy ATS",
+  "rows_evaluated": 9544,
+  "mean_score": 0.6609,
+  "median_score": 0.6622,
+  "min_score": 0.3172,
+  "max_score": 0.8803,
+  "selected_at_0_70_percent": 34.14,
+  "rows_explained": 300,
+  "top_terms_overall": [
+    {
+      "word": "Machine Learning",
+      "net_impact": -3.1378
+    },
+    {
+      "word": "Python",
+      "net_impact": -0.894
+    },
+    {
+      "word": "B.Tech",
+      "net_impact": -0.8822
+    },
+    {
+      "word": "Data Science",
+      "net_impact": -0.749
+    },
+    {
+      "word": "Machine Learning Engineer",
+      "net_impact": -0.7358
+    },
+    {
+      "word": "Bachelor",
+      "net_impact": 0.708
+    },
+    {
+      "word": "Engineering",
+      "net_impact": 0.5862
+    },
+    {
+      "word": "Manager",
+      "net_impact": 0.5239
+    },
+    {
+      "word": "Fresher",
+      "net_impact": -0.5198
+    },
+    {
+      "word": "Accountant",
+      "net_impact": -0.4738
+    },
+    {
+      "word": "Developer",
+      "net_impact": -0.4224
+    },
+    {
+      "word": "Analytics",
+      "net_impact": -0.4217
+    },
+    {
+      "word": "Computer Science",
+      "net_impact": -0.353
+    },
+    {
+      "word": "Software Developer",
+      "net_impact": -0.3226
+    },
+    {
+      "word": "Senior",
+      "net_impact": 0.303
+    }
+  ],
+  "sample_explanations": [
+    {
+      "model_name": "Legacy ATS",
+      "predicted_score": 0.6013,
+      "top_impact_features": [
+        {
+          "word": "Machine Learning",
+          "impact": -0.0286
+        },
+        {
+          "word": "Certified",
+          "impact": -0.0261
+        },
+        {
+          "word": "Engineer",
+          "impact": -0.0146
+        },
+        {
+          "word": "Python",
+          "impact": 0.0063
+        },
+        {
+          "word": "Deep Learning",
+          "impact": -0.0039
+        },
+        {
+          "word": "B.Tech",
+          "impact": -0.0008
+        }
+      ]
+    },
+    {
+      "model_name": "Legacy ATS",
+      "predicted_score": 0.6805,
+      "top_impact_features": [
+        {
+          "word": "Certified",
+          "impact": 0.0406
+        },
+        {
+          "word": "Machine Learning",
+          "impact": 0.0345
+        },
+        {
+          "word": "Computer Science",
+          "impact": 0.0315
+        },
+        {
+          "word": "B.Tech",
+          "impact": 0.0186
+        },
+        {
+          "word": "C",
+          "impact": 0.0114
+        },
+        {
+          "word": "SQL",
+          "impact": 0.0107
+        },
+        {
+          "word": "Python",
+          "impact": 0.0042
+        }
+      ]
+    },
+    {
+      "model_name": "Legacy ATS",
+      "predicted_score": 0.6793,
+      "top_impact_features": [
+        {
+          "word": "SQL",
+          "impact": 0.0297
+        },
+        {
+          "word": "Analytics",
+          "impact": 0.0085
+        },
+        {
+          "word": "Certified",
+          "impact": 0.0046
+        },
+        {
+          "word": "Machine Learning",
+          "impact": -0.0025
+        },
+        {
+          "word": "Reporting",
+          "impact": 0.0019
+        },
+        {
+          "word": "R",
+          "impact": -0.0007
+        }
+      ]
+    },
+    {
+      "model_name": "Legacy ATS",
+      "predicted_score": 0.6063,
+      "top_impact_features": [
+        {
+          "word": "Machine Learning",
+          "impact": -0.029
+        },
+        {
+          "word": "Analytics",
+          "impact": -0.0164
+        },
+        {
+          "word": "Tableau",
+          "impact": -0.0099
+        },
+        {
+          "word": "Business Analysis",
+          "impact": -0.0096
+        },
+        {
+          "word": "Data Analyst",
+          "impact": -0.0083
+        },
+        {
+          "word": "Python",
+          "impact": -0.0046
+        },
+        {
+          "word": "Visualization",
+          "impact": -0.0038
+        },
+        {
+          "word": "Excel",
+          "impact": 0.0019
+        }
+      ]
+    },
+    {
+      "model_name": "Legacy ATS",
+      "predicted_score": 0.7798,
+      "top_impact_features": [
+        {
+          "word": "Certified",
+          "impact": 0.041
+        },
+        {
+          "word": "Python",
+          "impact": 0.032
+        },
+        {
+          "word": "SQL",
+          "impact": 0.0316
+        },
+        {
+          "word": "Business Analyst",
+          "impact": 0.0297
+        },
+        {
+          "word": "Data Analyst",
+          "impact": 0.0283
+        },
+        {
+          "word": "Bachelor",
+          "impact": 0.0253
+        },
+        {
+          "word": "Reporting",
+          "impact": 0.0242
+        },
+        {
+          "word": "Business Analysis",
+          "impact": 0.0227
+        }
+      ]
+    },
+    {
+      "model_name": "Legacy ATS",
+      "predicted_score": 0.6101,
+      "top_impact_features": [
+        {
+          "word": "Accountant",
+          "impact": -0.0112
+        },
+        {
+          "word": "Excel",
+          "impact": -0.0056
+        },
+        {
+          "word": "Certified",
+          "impact": -0.0047
+        },
+        {
+          "word": "English",
+          "impact": -0.004
+        }
+      ]
+    },
+    {
+      "model_name": "Legacy ATS",
+      "predicted_score": 0.6329,
+      "top_impact_features": [
+        {
+          "word": "Engineer",
+          "impact": -0.0168
+        },
+        {
+          "word": "Python",
+          "impact": 0.0129
+        },
+        {
+          "word": "Deep Learning",
+          "impact": 0.0086
+        },
+        {
+          "word": "Machine Learning",
+          "impact": -0.0063
+        },
+        {
+          "word": "B.Tech",
+          "impact": 0.0057
+        },
+        {
+          "word": "Engineering",
+          "impact": 0.0056
+        },
+        {
+          "word": "Machine Learning Engineer",
+          "impact": -0.005
+        },
+        {
+          "word": "C",
+          "impact": 0.0032
+        }
+      ]
+    },
+    {
+      "model_name": "Legacy ATS",
+      "predicted_score": 0.5992,
+      "top_impact_features": []
+    },
+    {
+      "model_name": "Legacy ATS",
+      "predicted_score": 0.6628,
+      "top_impact_features": [
+        {
+          "word": "Senior",
+          "impact": -0.0154
+        },
+        {
+          "word": "Lead",
+          "impact": -0.0132
+        },
+        {
+          "word": "Engineer",
+          "impact": -0.0118
+        },
+        {
+          "word": "Master",
+          "impact": -0.0091
+        },
+        {
+          "word": "Manager",
+          "impact": -0.0079
+        },
+        {
+          "word": "Bachelor",
+          "impact": -0.0064
+        },
+        {
+          "word": "Engineering",
+          "impact": -0.0047
+        }
+      ]
+    },
+    {
+      "model_name": "Legacy ATS",
+      "predicted_score": 0.6028,
+      "top_impact_features": [
+        {
+          "word": "Python",
+          "impact": -0.0216
+        },
+        {
+          "word": "Analytics",
+          "impact": -0.0208
+        },
+        {
+          "word": "Visualization",
+          "impact": -0.0179
+        },
+        {
+          "word": "Machine Learning",
+          "impact": -0.0156
+        },
+        {
+          "word": "B.Tech",
+          "impact": -0.0125
+        }
+      ]
+    }
+  ]
+}
