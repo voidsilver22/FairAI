@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.jpeg" alt="FairAI Logo" width="400">
+</p>
+
 # FairAI: FairLens ATS Pipeline
 
 FairAI is a comprehensive platform for auditing and remediating bias in Applicant Tracking Systems (ATS). It provides a full-stack solution including a FastAPI backend for asynchronous ML pipeline execution and a React frontend for exploring results and managing audits.
