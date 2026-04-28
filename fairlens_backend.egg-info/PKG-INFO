@@ -1,0 +1,35 @@
+Metadata-Version: 2.4
+Name: fairlens-backend
+Version: 0.1.0
+Summary: Production-minded FairLens ATS Pipeline backend built with FastAPI.
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi<0.116.0,>=0.115.0
+Requires-Dist: starlette<0.47.0,>=0.40.0
+Requires-Dist: uvicorn[standard]<1.0.0,>=0.30.0
+Requires-Dist: pydantic<3.0.0,>=2.8.0
+Requires-Dist: pydantic-settings<3.0.0,>=2.3.0
+Requires-Dist: pandas<3.0.0,>=2.2.0
+Requires-Dist: numpy<3.0.0,>=2.0.0
+Requires-Dist: python-multipart<1.0.0,>=0.0.9
+Requires-Dist: httpx<1.0.0,>=0.27.0
+Provides-Extra: dev
+Requires-Dist: pytest<9.0.0,>=8.2.0; extra == "dev"
+Provides-Extra: gcp
+Requires-Dist: google-cloud-storage<3.0.0,>=2.17.0; extra == "gcp"
+Requires-Dist: google-cloud-aiplatform<2.0.0,>=1.61.0; extra == "gcp"
+Requires-Dist: google-cloud-pubsub<3.0.0,>=2.22.0; extra == "gcp"
+Provides-Extra: ml
+Requires-Dist: torch<3.0.0,>=2.3.0; extra == "ml"
+Requires-Dist: spacy<4.0.0,>=3.7.0; extra == "ml"
+Requires-Dist: sentence-transformers<4.0.0,>=3.0.0; extra == "ml"
+Requires-Dist: scikit-learn<2.0.0,>=1.5.0; extra == "ml"
+
+# FairLens Backend
+
+Read `project_state.md` first if you are resuming work in this repository.
+
+This repository contains the Python-only backend for the FairLens ATS Pipeline. It exposes a FastAPI service for secure upload initialization, audit job submission, fairness reporting, artifact retrieval, and hosted-model scoring. The implementation is local-first for development and testing, with explicit adapter boundaries for Google Cloud Storage, Vertex AI, and Pub/Sub.
+
+The README is completed after the implementation sections are in place. See `project_state.md` for the in-progress architecture and implementation status.
+

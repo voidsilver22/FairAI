@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+@theme {
+  --color-border: #e2e8f0;
+  --color-input: #f8fafc;
+  --color-ring: #2563eb;
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+
+  --color-primary: #2563eb;
+  --color-primary-foreground: #ffffff;
+
+  --color-secondary: #64748b;
+  --color-secondary-foreground: #ffffff;
+
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #ffffff;
+
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+
+  --color-accent: #f8fafc;
+  --color-accent-foreground: #0f172a;
+
+  --color-success: #10b981;
+  --color-success-foreground: #ffffff;
+
+  --color-danger: #ef4444;
+  --color-danger-foreground: #ffffff;
+
+  --color-warning: #f59e0b;
+}
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+  }
+}
+
+body {
+  @apply bg-slate-50 text-slate-900 antialiased font-sans;
+}
+
+/* Custom UI Components inspired by Fair AI */
+.metric-ring-container {
+  @apply flex flex-col items-center p-6 bg-white rounded-2xl border border-slate-100 shadow-sm transition-all hover:shadow-md;
+}
+
+.status-banner {
+  @apply flex items-center gap-4 p-5 rounded-2xl border transition-all;
+}
+
+.status-banner-critical {
+  @apply bg-red-50 border-red-100 text-red-900;
+}
+
+.status-banner-success {
+  @apply bg-emerald-50 border-emerald-100 text-emerald-900;
+}
+
+.action-card {
+  @apply p-6 bg-white rounded-2xl border border-slate-100 shadow-sm flex items-center justify-between hover:border-primary/30 transition-all cursor-pointer;
+}

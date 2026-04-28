@@ -1,0 +1,20 @@
+steps:
+  - name: "python:3.12"
+    entrypoint: "bash"
+    args:
+      - "-c"
+      - |
+        python -m venv .venv
+        ./.venv/bin/pip install -e .[dev]
+        ./.venv/bin/pytest -vv
+
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      - "build"
+      - "-t"
+      - "gcr.io/$PROJECT_ID/fairlens-backend:$COMMIT_SHA"
+      - "."
+
+images:
+  - "gcr.io/$PROJECT_ID/fairlens-backend:$COMMIT_SHA"
+
