@@ -1,0 +1,113 @@
+{
+  "model_name": "Baseline ATS",
+  "rows_evaluated": 9544,
+  "selection_threshold": 0.6,
+  "mean_score_gender": {
+    "Female": 0.6612632806810722,
+    "Male": 0.6608950469270615
+  },
+  "mean_score_college_tier": {
+    "Tier 1": 0.6471728158462254,
+    "Tier 2": 0.6693023511862725,
+    "Tier 3": 0.6473133849617522,
+    "Unknown": 0.6604766661775829
+  },
+  "mean_score_region": {
+    "Metro": 0.6463765207417245,
+    "Non-Metro": 0.663164041364605
+  },
+  "selection_rate_gender": {
+    "Female": 0.7621842306710895,
+    "Male": 0.7584
+  },
+  "selection_rate_college_tier": {
+    "Tier 1": 0.7600446428571429,
+    "Tier 2": 0.777552400270453,
+    "Tier 3": 0.7163897280966768,
+    "Unknown": 0.8928571428571429
+  },
+  "protected_group_ranking": {
+    "Female_Tier 3_Metro": 0.6312746416162588,
+    "Male_Tier 3_Metro": 0.6323468762995244,
+    "Male_Tier 1_Non-Metro": 0.6358640373300898,
+    "Female_Tier 1_Non-Metro": 0.6409952194313702,
+    "Female_Tier 2_Metro": 0.6421206605524138,
+    "Male_Tier 2_Metro": 0.6444833624450537,
+    "Female_Tier 3_Non-Metro": 0.647530597760006,
+    "Male_Tier 3_Non-Metro": 0.6508473805802918,
+    "Male_Unknown_Non-Metro": 0.6588561634190342,
+    "Female_Unknown_Non-Metro": 0.6627453700395511,
+    "Female_Tier 2_Non-Metro": 0.6726599211321582,
+    "Male_Tier 2_Non-Metro": 0.6728249217257739,
+    "Male_Tier 1_Metro": 0.6782774200592153,
+    "Female_Tier 1_Metro": 0.6978489216802861
+  },
+  "top_hidden_embedding_features": [
+    {
+      "feature": "embed_19",
+      "importance": 0.009638
+    },
+    {
+      "feature": "embed_271",
+      "importance": 0.007454
+    },
+    {
+      "feature": "embed_94",
+      "importance": 0.004321
+    },
+    {
+      "feature": "embed_172",
+      "importance": 0.00313
+    },
+    {
+      "feature": "embed_92",
+      "importance": 0.002531
+    },
+    {
+      "feature": "embed_192",
+      "importance": 0.00212
+    },
+    {
+      "feature": "embed_180",
+      "importance": 0.002055
+    },
+    {
+      "feature": "embed_157",
+      "importance": 0.002007
+    },
+    {
+      "feature": "embed_292",
+      "importance": 0.001656
+    },
+    {
+      "feature": "embed_165",
+      "importance": 0.001437
+    },
+    {
+      "feature": "embed_168",
+      "importance": 0.001427
+    },
+    {
+      "feature": "embed_131",
+      "importance": 0.001271
+    },
+    {
+      "feature": "embed_112",
+      "importance": 0.001106
+    },
+    {
+      "feature": "embed_16",
+      "importance": 0.001091
+    },
+    {
+      "feature": "embed_218",
+      "importance": 0.001087
+    }
+  ],
+  "summary": [
+    "Baseline ATS demonstrates opaque latent scoring behavior.",
+    "Protected-group variation indicates fairness review is needed.",
+    "Selection disparities should be compared against FairLens.",
+    "Embedding dimensions are abstract and difficult to interpret directly."
+  ]
+}
