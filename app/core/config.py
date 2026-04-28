@@ -40,6 +40,7 @@ class Settings(BaseSettings):
     )
 
     local_storage_root: Path = Path(".fairlens-data")
+    model_training_workspace: Path = Path("Model Training")
     upload_url_ttl_minutes: int = 30
     download_url_ttl_minutes: int = 30
     signed_url_secret: str = "local-fairlens-secret"
@@ -54,6 +55,10 @@ class Settings(BaseSettings):
         default=None,
         validation_alias=AliasChoices("FAIRLENS_GCP_PROJECT", "GCP_PROJECT"),
     )
+    google_application_credentials: Path | None = Field(
+        default=None,
+        validation_alias=AliasChoices("GOOGLE_APPLICATION_CREDENTIALS"),
+    )
     uploads_bucket: str = "fairlens-uploads"
     results_bucket: str = "fairlens-results"
     archive_bucket: str = "fairlens-archive"
@@ -64,6 +69,9 @@ class Settings(BaseSettings):
 
     def resolved_storage_root(self) -> Path:
         return self.local_storage_root.resolve()
+
+    def resolved_model_training_workspace(self) -> Path:
+        return self.model_training_workspace.resolve()
 
 
 @lru_cache(maxsize=1)

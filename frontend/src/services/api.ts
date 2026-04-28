@@ -2,6 +2,7 @@ import axios from 'axios';
 import type { AsyncJobRecord, UploadInitResponse, FairnessReport } from '../types';
 
 const API_BASE_URL = 'http://localhost:8080/api/v1';
+const API_ORIGIN = 'http://localhost:8080';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -13,11 +14,17 @@ export const uploadService = {
     return response.data;
   },
   uploadFile: async (url: string, file: File): Promise<void> => {
-    // In local mode, we might need to send as multipart or raw bytes
-    // For now, assume PUT with binary as common for signed URLs
-    await axios.put(url, file, {
+    // For local development, the backend expects a POST request with multipart/form-data
+    // and a field named 'file'.
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    // Ensure we use the full URL if a relative path is provided
+    const uploadUrl = url.startsWith('/') ? `${API_ORIGIN}${url}` : url;
+    
+    await axios.post(uploadUrl, formData, {
       headers: {
-        'Content-Type': file.type || 'application/octet-stream',
+        'Content-Type': 'multipart/form-data',
       },
     });
   },

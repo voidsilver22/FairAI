@@ -32,8 +32,8 @@ const MetricRing: React.FC<{ metric: MetricResult }> = ({ metric }) => {
 
   return (
     <div className="flex flex-col items-center p-5 bg-white rounded-2xl border border-slate-100 shadow-sm">
-      <div className="h-28 w-28 relative">
-        <ResponsiveContainer width="100%" height="100%">
+      <div className="h-28 w-28 relative flex items-center justify-center">
+        <ResponsiveContainer width={112} height={112}>
           <PieChart>
             <Pie
               data={data}
@@ -44,6 +44,7 @@ const MetricRing: React.FC<{ metric: MetricResult }> = ({ metric }) => {
               startAngle={90}
               endAngle={-270}
               stroke="none"
+              isAnimationActive={false}
             >
               {data.map((_, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -58,7 +59,7 @@ const MetricRing: React.FC<{ metric: MetricResult }> = ({ metric }) => {
         </div>
       </div>
       <span className="text-xs font-bold text-slate-800 mt-3 text-center line-clamp-1 uppercase tracking-tight">
-        {metric.metric_name.replace(' Difference', '').replace(' (4/5ths Rule)', '')}
+        {(metric.metric_name || 'Metric').replace(' Difference', '').replace(' (4/5ths Rule)', '')}
       </span>
       <span className="text-[10px] font-medium text-slate-400 mt-1">
         THRESHOLD: {metric.metric_key === 'disparate_impact' ? `>${threshold}` : `±${threshold}`}
@@ -83,6 +84,30 @@ const Mitigation: React.FC = () => {
   });
 
   if (error) return <div className="p-8 text-red-500 font-bold bg-red-50 rounded-xl border border-red-100">Error loading job data.</div>;
+
+  if (job?.status === 'failed') {
+    return (
+      <div className="p-8">
+        <div className="bg-red-50 border border-red-100 rounded-2xl p-8 flex flex-col items-center text-center space-y-4">
+          <div className="bg-red-500 text-white p-4 rounded-full shadow-lg">
+            <ShieldAlert size={48} />
+          </div>
+          <h2 className="text-2xl font-black text-red-900">Audit Pipeline Failed</h2>
+          <p className="text-red-700/80 font-medium max-w-md">
+            The machine learning pipeline encountered an error:
+            <br />
+            <span className="font-mono mt-2 block bg-red-100 p-2 rounded text-sm">{job.error || 'Unknown error'}</span>
+          </p>
+          <button 
+            onClick={() => window.history.back()}
+            className="mt-4 px-6 py-2 bg-red-900 text-white rounded-xl font-bold"
+          >
+            Go Back & Fix
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   if (job?.status === 'pending' || job?.status === 'running') {
     return (
@@ -111,14 +136,14 @@ const Mitigation: React.FC = () => {
   const isCompliant = report.verification_metrics?.every(m => m.passed) ?? false;
   
   // Calculate accuracy drop
-  const baselineAcc = report.baseline_performance.accuracy;
-  const verificationAcc = report.verification_performance.accuracy;
-  const accDrop = ((baselineAcc - verificationAcc) / baselineAcc) * 100;
+  const baselineAcc = report.baseline_performance?.accuracy || 0;
+  const verificationAcc = report.verification_performance?.accuracy || 0;
+  const accDrop = baselineAcc > 0 ? ((baselineAcc - verificationAcc) / baselineAcc) * 100 : 0;
   
   // Calculate fairness improvement
-  const baselinePassed = report.baseline_metrics.filter(m => m.passed).length;
-  const verificationPassed = report.verification_metrics.filter(m => m.passed).length;
-  const totalMetrics = report.baseline_metrics.length;
+  const baselinePassed = (report.baseline_metrics || []).filter(m => m.passed).length;
+  const verificationPassed = (report.verification_metrics || []).filter(m => m.passed).length;
+  const totalMetrics = (report.baseline_metrics || []).length || 1;
   const fairnessImprovement = ((verificationPassed - baselinePassed) / totalMetrics) * 100;
 
   return (

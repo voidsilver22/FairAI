@@ -26,3 +26,15 @@ frontend/dist-ssr/
 .idea/
 .DS_Store
 
+# Model training workspace
+Model Training/venv/
+Model Training/__pycache__/
+Model Training/*.rar
+Model Training/*.pth
+Model Training/*.pkl
+Model Training/*.csv
+Model Training/*.json
+
+# Credentials
+key.json.json
+.env

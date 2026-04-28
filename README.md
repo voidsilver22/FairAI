@@ -45,6 +45,9 @@ tests/
 - `GET /api/v1/jobs/{job_id}/artifacts/{artifact_kind}`
 - `POST /api/v1/pipeline/execute` for async inline-record testing
 - `POST /api/v1/hosted/score`
+- `GET /api/v1/model-training`
+- `POST /api/v1/model-training/dataset`
+- `POST /api/v1/model-training/audit`
 
 ## Local Setup
 
@@ -66,7 +69,28 @@ Important environment variables:
 - `FAIRLENS_LOCAL_STORAGE_ROOT=.fairlens-data`
 - `FAIRLENS_QUEUE_BACKEND=local`
 - `FAIRLENS_STORAGE_BACKEND=local`
+- `FAIRLENS_MODEL_TRAINING_WORKSPACE="Model Training"`
 - `STORAGE_MODE=local` is also supported as an alias
+
+## Model Training Integration
+
+The detached `Model Training/` folder is now integrated as a configured workspace instead of a standalone script bundle.
+
+What is now wired into the backend:
+- `GET /api/v1/model-training` inspects the workspace, lists expected assets, and reports which training capabilities are available from installed dependencies.
+- `POST /api/v1/model-training/dataset` rebuilds `fairlens_dataset_unstructured.csv` from the structured source dataset.
+- `POST /api/v1/model-training/audit` regenerates `final_audit_report.json` from `baseline_scored_results.csv` and `clean_scored_results.csv`.
+
+What remains intentionally optional:
+- baseline model training
+- DANN training
+- fair-score generation
+
+Those heavier steps still depend on the optional ML stack:
+
+```bash
+pip install -e .[ml]
+```
 
 ## Run The Backend
 

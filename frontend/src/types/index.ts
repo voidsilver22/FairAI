@@ -10,7 +10,7 @@ export interface MetricResult {
   group_b: string;
   value: number;
   threshold: number;
-  passed: bool;
+  passed: boolean;
   severity: Severity;
   human_summary: string;
   regulation_refs: string[];

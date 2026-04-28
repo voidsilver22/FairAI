@@ -74,10 +74,15 @@ class JobOrchestrator:
                 progress_callback=self._progress_callback(job_id),
             )
             completed = self._persist_output(job, output)
+            
+            # Include the full report in the job_store result for the frontend
+            job_result = output.to_job_result()
+            job_result["report"] = output.report.model_dump(mode="json")
+            
             self.job_store.update_job(
                 job_id,
                 status=JobStatus.COMPLETED,
-                result=output.to_job_result(),
+                result=job_result,
                 error=None,
             )
             return completed

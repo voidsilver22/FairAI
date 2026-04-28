@@ -28,5 +28,10 @@ async def metadata(container: ApplicationContainer = Depends(get_container)) -> 
             "gcp_project": settings.gcp_project,
             "dlp_enabled": settings.dlp_enabled,
             "future_hosted_api": True,
+            "model_training_workspace": str(settings.resolved_model_training_workspace()),
+            "model_training_workspace_present": container.model_training_service.workspace.exists(),
+            "model_training_capabilities": container.model_training_service.describe_workspace()[
+                "capabilities"
+            ],
         },
     )

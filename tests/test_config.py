@@ -7,9 +7,10 @@ def test_settings_read_environment(monkeypatch):
     monkeypatch.setenv("FAIRLENS_STORAGE_BACKEND", "local")
     monkeypatch.setenv("FAIRLENS_QUEUE_BACKEND", "pubsub")
     monkeypatch.setenv("GCP_PROJECT", "fairlens-test-project")
+    monkeypatch.setenv("FAIRLENS_MODEL_TRAINING_WORKSPACE", "training-assets")
     settings = Settings()
 
     assert settings.storage_backend == "local"
     assert settings.queue_backend == "pubsub"
     assert settings.gcp_project == "fairlens-test-project"
-
+    assert settings.model_training_workspace.name == "training-assets"

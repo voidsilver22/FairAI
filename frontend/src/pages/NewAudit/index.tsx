@@ -42,8 +42,8 @@ const NewAudit: React.FC = () => {
     
     try {
       const { job_id } = await jobService.createDebiasJob(fileUri, {
-        label_column: 'hired',
-        protected_attributes: ['gender', 'race', 'age'],
+        label_column: 'shortlisted',
+        protected_attributes: ['gender', 'age_group', 'college_tier', 'region'],
       });
       navigate(`/mitigation/${job_id}`);
     } catch (error) {

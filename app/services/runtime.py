@@ -12,6 +12,7 @@ from app.ml.pipeline import FairLensPipeline
 from app.services.artifact_service import ArtifactService
 from app.services.job_service import JobService
 from app.services.job_store import InMemoryJobStore
+from app.services.model_training_service import ModelTrainingService
 from app.services.orchestration import JobOrchestrator
 from app.services.reporting_service import ReportingService
 from app.services.repositories import FileJobRepository
@@ -29,6 +30,7 @@ class ApplicationContainer:
     artifact_service: ArtifactService
     upload_service: UploadService
     reporting_service: ReportingService
+    model_training_service: ModelTrainingService
     pipeline: FairLensPipeline
     orchestrator: JobOrchestrator
     job_service: JobService
@@ -38,6 +40,13 @@ class ApplicationContainer:
 def get_application_container() -> ApplicationContainer:
     settings = get_settings()
     configure_logging(settings)
+
+    if settings.google_application_credentials:
+        import os
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(
+            settings.google_application_credentials.resolve()
+        )
+
     storage = build_storage_adapter(settings)
     queue = build_queue_adapter(settings)
     compute = build_compute_adapter(settings)
@@ -46,6 +55,7 @@ def get_application_container() -> ApplicationContainer:
     artifact_service = ArtifactService(storage, settings)
     upload_service = UploadService(storage, settings)
     reporting_service = ReportingService()
+    model_training_service = ModelTrainingService(settings)
     pipeline = FairLensPipeline(
         counterfactual_sample_size=settings.max_counterfactual_samples,
     )
@@ -76,6 +86,7 @@ def get_application_container() -> ApplicationContainer:
         artifact_service=artifact_service,
         upload_service=upload_service,
         reporting_service=reporting_service,
+        model_training_service=model_training_service,
         pipeline=pipeline,
         orchestrator=orchestrator,
         job_service=job_service,

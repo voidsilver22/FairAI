@@ -12,6 +12,8 @@ The main target of this pass was:
 
 All of that is implemented locally and covered by tests.
 
+The previously detached `Model Training/` folder is now integrated through a dedicated workspace service and API routes for inspection, dataset generation, and audit regeneration.
+
 ## High-Level Architecture
 FairLens now has two job representations:
 
@@ -57,6 +59,7 @@ Generated directories such as `.venv`, `.pytest_cache`, and `__pycache__` omitte
 │   │       ├── jobs.py
 │   │       ├── metadata.py
 │   │       ├── metrics.py
+│   │       ├── model_training.py
 │   │       └── uploads.py
 │   ├── core
 │   │   ├── __init__.py
@@ -77,6 +80,10 @@ Generated directories such as `.venv`, `.pytest_cache`, and `__pycache__` omitte
 │   │   ├── pipeline.py
 │   │   ├── scrubber.py
 │   │   └── utils.py
+│   ├── model_training
+│   │   ├── __init__.py
+│   │   ├── auditing.py
+│   │   └── dataset_builder.py
 │   ├── models
 │   │   ├── __init__.py
 │   │   ├── domain.py
@@ -87,6 +94,7 @@ Generated directories such as `.venv`, `.pytest_cache`, and `__pycache__` omitte
 │   │   ├── hosted.py
 │   │   ├── jobs.py
 │   │   ├── metrics.py
+│   │   ├── model_training.py
 │   │   ├── reports.py
 │   │   └── uploads.py
 │   ├── services
@@ -94,6 +102,7 @@ Generated directories such as `.venv`, `.pytest_cache`, and `__pycache__` omitte
 │   │   ├── artifact_service.py
 │   │   ├── job_service.py
 │   │   ├── job_store.py
+│   │   ├── model_training_service.py
 │   │   ├── orchestration.py
 │   │   ├── reporting_service.py
 │   │   ├── repositories.py
@@ -108,9 +117,25 @@ Generated directories such as `.venv`, `.pytest_cache`, and `__pycache__` omitte
     ├── test_config.py
     ├── test_job_store.py
     ├── test_metrics.py
+    ├── test_model_training.py
     ├── test_pipeline.py
     └── test_storage_adapters.py
 ```
+
+## Model Training Workspace
+Files:
+- `app/services/model_training_service.py`
+- `app/model_training/auditing.py`
+- `app/model_training/dataset_builder.py`
+- `app/api/routes/model_training.py`
+
+Purpose:
+- Treat `Model Training/` as a configured workspace instead of importing loose scripts directly.
+- Expose dependency-light steps through the backend:
+  - workspace inspection
+  - structured-to-unstructured dataset generation
+  - fairness audit regeneration
+- Keep heavy training steps optional behind the `ml` extra.
 
 ## What Is Now Async
 These request paths no longer execute the ML pipeline inline:

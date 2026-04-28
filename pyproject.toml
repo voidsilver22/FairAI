@@ -30,6 +30,7 @@ gcp = [
   "google-cloud-pubsub>=2.22.0,<3.0.0",
 ]
 ml = [
+  "joblib>=1.4.0,<2.0.0",
   "torch>=2.3.0,<3.0.0",
   "spacy>=3.7.0,<4.0.0",
   "sentence-transformers>=3.0.0,<4.0.0",
