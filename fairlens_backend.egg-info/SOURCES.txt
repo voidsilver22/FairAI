@@ -53,7 +53,10 @@ app/services/__init__.py
 app/services/artifact_service.py
 app/services/job_service.py
 app/services/job_store.py
+<<<<<<< Updated upstream
 app/services/model_training_service.py
+=======
+>>>>>>> Stashed changes
 app/services/orchestration.py
 app/services/reporting_service.py
 app/services/repositories.py

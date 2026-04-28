@@ -75,9 +75,12 @@ tests/
 - `GET /api/v1/jobs/{job_id}/artifacts/{artifact_kind}`
 - `POST /api/v1/pipeline/execute` for async inline-record testing
 - `POST /api/v1/hosted/score`
+<<<<<<< Updated upstream
 - `GET /api/v1/model-training`
 - `POST /api/v1/model-training/dataset`
 - `POST /api/v1/model-training/audit`
+=======
+>>>>>>> Stashed changes
 
 ## Local Setup
 
@@ -99,6 +102,7 @@ Important environment variables:
 - `FAIRLENS_LOCAL_STORAGE_ROOT=.fairlens-data`
 - `FAIRLENS_QUEUE_BACKEND=local`
 - `FAIRLENS_STORAGE_BACKEND=local`
+<<<<<<< Updated upstream
 - `FAIRLENS_MODEL_TRAINING_WORKSPACE="Model Training"`
 - `STORAGE_MODE=local` is also supported as an alias
 
@@ -122,6 +126,10 @@ Those heavier steps still depend on the optional ML stack:
 pip install -e .[ml]
 ```
 
+=======
+- `STORAGE_MODE=local` is also supported as an alias
+
+>>>>>>> Stashed changes
 ## Run The Backend
 
 ### Linux/macOS

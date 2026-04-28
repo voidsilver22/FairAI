@@ -37,4 +37,7 @@ Model Training/*.json
 
 # Credentials
 key.json.json
+app/key.json.json
 .env
+
+.skills/
