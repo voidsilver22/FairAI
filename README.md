@@ -47,9 +47,19 @@ tests/
 - `POST /api/v1/hosted/score`
 
 ## Local Setup
+
+### Linux/macOS
 ```bash
 python -m venv .venv
-./.venv/bin/pip install -e .[dev]
+source .venv/bin/activate
+pip install -e .[dev]
+```
+
+### Windows
+```powershell
+python -m venv .venv
+.\.venv\Scripts\activate
+pip install -e .[dev]
 ```
 
 Important environment variables:
@@ -59,13 +69,27 @@ Important environment variables:
 - `STORAGE_MODE=local` is also supported as an alias
 
 ## Run The Backend
+
+### Linux/macOS
 ```bash
 ./.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
 ```
 
+### Windows
+```powershell
+.\.venv\Scripts\uvicorn app.main:app --host 0.0.0.0 --port 8080 --reload
+```
+
 ## Run Tests
+
+### Linux/macOS
 ```bash
 ./.venv/bin/pytest -q
+```
+
+### Windows
+```powershell
+.\.venv\Scripts\pytest -q
 ```
 
 ## Local vs Cloud
